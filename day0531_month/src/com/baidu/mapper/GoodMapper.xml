@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baidu.mapper.GoodMapper">
+	<select id="getGoodList" resultType="good">
+		select 
+			gid,gname,place,store,ru,chu,weight,unit,intime,outtime
+		from 
+			d_good
+	</select>
+	
+	<select id="getGoodById" resultType="good">
+		select
+			gid,gname,place,ru,
+			store,
+			weight,unit,intime,outtime
+		from 
+			d_good
+		where
+			gid=#{gid}	
+	</select>
+	
+	<select id="getGoodInById" resultType="good">
+		select
+			gid,gname,place
+		from 
+			d_good
+		where
+			gid=#{gid}	
+	</select>
+
+	<!--商品入库  -->
+	<update id="GoodIn">
+		update 
+			d_good
+		set gid=#{gid},gname=#{gname},place=#{place},
+			ru=#{ru},
+			store=#{store}+#{ru}
+		where 
+			gid=#{gid}
+	</update>
+	
+	<!--商品出库  -->
+	<update id="GoodOut">
+		update 
+			d_good
+		set gid=#{gid},gname=#{gname},place=#{place},
+			chu=#{chu},
+			store=#{store}-#{chu}
+		where 
+			gid=#{gid}
+	</update>
+	
+	<insert id="updateTableIn">
+		insert 
+			d_in 
+		set 
+			intime=#{intime},
+			outtime=now()
+	</insert>
+</mapper>
